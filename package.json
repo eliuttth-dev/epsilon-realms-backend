@@ -1,0 +1,22 @@
+{
+  "name": "epsilon-realms-minecraft-backend",
+  "version": "1.0.0",
+  "description": "Minecraft server - backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/source.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3"
+  }
+}
