@@ -5,4 +5,5 @@ export interface UserProps{
     password: string;
     location?: string; // location: Location
     type: "user" | "admin" | "vip" | "sub" | "observer"; 
+    minecraft_id?: string;
 }
