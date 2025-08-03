@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS MinecraftUser (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- CREATE TABLE IF NOT EXISTS UserTypes(
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     name VARCHAR(50) NOT NULL UNIQUE
+-- )
+
+CREATE TABLE IF NOT EXISTS Users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    userPublicId CHAR(36) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    passwordHash VARCHAR(255) NOT NULL,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    isActive BOOLEAN DEFAULT TRUE,
+    userType ENUM("user", "vip", "sub", "observer", "admin", "owner") NOT NULL DEFAULT "user",
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    minecraftUserId INT,
+    FOREIGN KEY (minecraftUserId) REFERENCES MinecraftUser(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS MinecraftUserAuthToken (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    refreshToken VARCHAR(255) NOT NULL UNIQUE,
+    clientToken VARCHAR(255) NOT NULL UNIQUE,
+    secretToken VARCHAR(255) NOT NULL UNIQUE,
+    minecraftUserId INT,
+    FOREIGN KEY (minecraftUserId) REFERENCES MinecraftUser(id) ON DELETE CASCADE
+);
