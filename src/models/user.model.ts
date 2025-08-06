@@ -1,6 +1,7 @@
 import { UserProps } from "./interface";
 import { poolConnection } from "../options/db";
 import { RowDataPacket } from "mysql2";
+import { ApiResponse } from "../types/ApiResponse";
 
 // Main functions 
 export const createNewUser = async ({props}: {props: UserProps}): Promise<void> => {
@@ -24,7 +25,7 @@ export const searchUserByUsername = async (username): Promise<object> => { retur
 export const searchUserById = async (id): Promise<object> => { return {} };
 export const searchUserByMinecraftId = async (minecraftId): Promise<object> => { return {} };
 
-export const searchUserByMatchingProps = async (props: any) => { 
+export const searchUserByMatchingProps = async (props: {username?: string, email?: string}): Promise<ApiResponse> => { 
     const {username, email} = props;
     let connection;
     try{
@@ -37,16 +38,23 @@ export const searchUserByMatchingProps = async (props: any) => {
 
         if(searchResults.length > 0) 
             return {
-                status: true,
-                data: searchResults[0]
-            }
+                success: true,
+                data: searchResults[0],
+                statusCode: 200
+            };
+
         return {
-            status: false,
-            data: "no user exists"
-        }
+            success: false,
+            error: "no user found with provided properties.",
+            statusCode: 404
+        };
     }catch(error: any){
         console.error("Error searching user:", error.message);
-        throw new Error(`Database error while searching for user. ${error.message}`);
+        return {
+            success: false,
+            error: `Database error: ${error.message}`,
+            statusCode: 500
+        }
     }finally{
         if(connection) connection.release();
     }
