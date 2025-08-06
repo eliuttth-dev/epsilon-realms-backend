@@ -1,9 +1,9 @@
 export interface UserProps{
-    name: string;
+    userPublicId: string;
     username: string;
     email: string;
-    password: string;
-    location?: string; // location: Location
-    type: "user" | "admin" | "vip" | "sub" | "observer"; 
-    minecraft_id?: string;
+    passwordHash: string;
+    // location?: string; // location: Location
+    type: "user" | "vip" | "sub" | "observer" | "admin" | "owner"; 
+    minecraftUserId?: string;
 }
