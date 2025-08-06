@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import { searchUserByMatchingProps } from "../models/user.model";
+import { generatePublicId } from "../utils/generatePublicId";
 
 export const authRegisterMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const {username, email, password} = req.body;
@@ -26,11 +27,11 @@ export const authRegisterMiddleware = async (req: Request, res: Response, next: 
     try{
         const searchForExistingUser = await searchUserByMatchingProps({username, email});
         console.log(searchForExistingUser);
-        if(searchForExistingUser.status === true) {
+        if(searchForExistingUser.success === true) {
             res.status(400).json({message: "User already exists", data: searchForExistingUser.data});
             return;
         }
-        (req.body as { userPublicId?: string}).userPublicId = "#-TEST-UUID";
+        (req.body as { userPublicId?: string}).userPublicId = generatePublicId(username);
         next();
     }catch(error: any){
         res.status(500).json({message: "Internal Server Error Middleware", error: error.message})
