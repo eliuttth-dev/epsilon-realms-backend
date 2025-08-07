@@ -1,8 +1,8 @@
 export const ERROR_MESSAGES = {
   validation: {
-    username: "Username format incorrect",
-    email: "Email format incorrect",
-    password: "Password format incorrect"
+    username: "Username must be at least 4 characters long and cannot contain spaces.",
+    email: "Please enter a valid email address",
+    password: "Password must be at least 8 characters long and include a number, a capital letter, and a special character"
   },
   auth: {
     userExists: "User already exists"

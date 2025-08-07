@@ -1,7 +1,7 @@
 import { UserProps } from "./interface";
 import { poolConnection } from "../options/db";
 import { RowDataPacket } from "mysql2";
-import { ApiResponse } from "../types/ApiResponse";
+import { ApiResponse } from "../types";
 
 // Main functions 
 export const createNewUser = async ({props}: {props: UserProps}): Promise<void> => {

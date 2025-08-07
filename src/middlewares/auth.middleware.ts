@@ -3,13 +3,9 @@ import { searchUserByMatchingProps } from "../models/user.model";
 import { generatePublicId } from "../utils/generatePublicId";
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import { validateInput } from "../utils/validateInput";
+import { RegisterBody } from "../types";
+import { errorLogMessages, logMessages } from "../utils/logMessages";
 
-interface RegisterBody {
-    username: string;
-    email: string;
-    password: string;
-    userPublicId?: string;
-}
 
 export const authRegisterMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const {username, email, password} = req.body as RegisterBody;
@@ -34,15 +30,17 @@ export const authRegisterMiddleware = async (req: Request, res: Response, next: 
 
     try{
         const searchForExistingUser = await searchUserByMatchingProps({username, email});
-        console.log(searchForExistingUser);
+        logMessages("Testing response from func: searchForExistingUser", searchForExistingUser);
+
         if(searchForExistingUser.success === true) {
             res.status(400).json({message: ERROR_MESSAGES.auth.userExists, data: searchForExistingUser.data});
             return;
         }
+ 
         req.body.userPublicId = generatePublicId(username);
         next();
     }catch(error: any){
-        console.error("Auth Register Middleware error", error.message);
+        errorLogMessages("Auth Register Middleware error", error);
         res.status(500).json({message: ERROR_MESSAGES.server.generic, error: error.message})
         return;
     }
